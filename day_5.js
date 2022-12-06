@@ -538,6 +538,23 @@ const crateMover = (stacks, commands) => {
   return stacks.map(stack => stack.pop()).join('');
 }
 
-console.log(crateMover(crateStacks, commandsInput));
+// console.log(crateMover(crateStacks, commandsInput));
 
 // Answer: VGBBJCRMN
+
+// Part 2: 
+
+const crateMover9001 = (stacks, commands) => {
+  const parsedCommands = commandParser(commands);
+  parsedCommands.forEach(command => {
+    const receivingStackIndex = command[2] - 1;
+    const movingCrates = 
+      stacks[command[1] - 1].splice(-command[0], command[0])
+    stacks[receivingStackIndex].push(...movingCrates);
+  });
+  return stacks.map(stack => stack.pop()).join('');
+}
+
+console.log(crateMover9001(crateStacks, commandsInput));
+
+// Answer: LBBVJBRMH
