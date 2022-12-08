@@ -31,14 +31,41 @@ const findDirectorySizes = feed => {
   return dirResults.concat(currentDirPath);
 }
 
+const findSmallDirectories = directories => {
+  return directories.filter(({ size }) => size <= 100000);
+}
+
+const sumDirectories = directories => {
+  return directories.reduce((sum, { size }) => sum + size, 0);
+}
+
 const dirSizes = findDirectorySizes(parsedInput);
 
-const findSmallDirectories = directories => directories.filter(({ size }) => size <= 100000);
-
 const smallDirs = findSmallDirectories(dirSizes);
-
-const sumDirectories = directories => directories.reduce((sum, { size }) => sum + size, 0);
 
 console.log(sumDirectories(smallDirs));
 
 // Answer: 1477771
+
+// Part 2:
+
+const TOTAL_SYSTEM_SIZE = 70000000;
+const UPDATE_SIZE = 30000000;
+
+const findAvailableSpace = (directories, systemSize) => {
+  const root = directories.find(({ name }) => name === '/');
+  return systemSize - root.size;
+}
+
+const findSmallestNeededDirectory = (directories, neededSize) => {
+  return Math.min(...directories
+    .filter(({ size }) => size >= neededSize)
+    .map(({ size }) => size)
+  );
+}
+
+const neededSpace = UPDATE_SIZE - findAvailableSpace(dirSizes, TOTAL_SYSTEM_SIZE); 
+
+console.log(findSmallestNeededDirectory(dirSizes, neededSpace));
+
+// Answer: 3579501
